@@ -19,7 +19,32 @@ const Avatar = {
 }
 
 function withAvatarURL (InnerComponent) {
-  // Implement this!
+  let cached;
+  return {
+    props: [
+      'username'
+    ],
+    data() {
+      return {
+        src: (cached ? cached : 'http://via.placeholder.com/200x200')
+      }
+    },
+    created() {
+      if (!cached) {
+        fetchURL(this.username, url => {
+          this.src = url;
+          cached = url;
+        })
+      }
+    },
+    render(h) {
+      return h(InnerComponent, {
+        props: {
+          src: this.src
+        }
+      })
+    }
+  }
 }
 
 const SmartAvatar = withAvatarURL(Avatar)

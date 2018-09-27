@@ -1,5 +1,18 @@
 <script>
 function convert (obj) {
-  // Implement this!
+  Object.keys(obj).forEach(key => {
+    let state = obj[key];
+
+    Object.defineProperty(obj, key, {
+      get() {
+        console.log(`getting key "${key}": ${state}`);
+        return state;
+      },
+      set(val) {
+        console.log(`setting key "${key}" to: ${val}`);
+        state = val;
+      }
+    })
+  })
 }
 </script>

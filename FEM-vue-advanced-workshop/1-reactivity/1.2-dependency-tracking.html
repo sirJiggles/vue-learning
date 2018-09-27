@@ -2,10 +2,29 @@
 // a class representing a dependency
 // exposing it on window is necessary for testing
 window.Dep = class Dep {
-  // Implement this!
+  constructor() {
+    this.subscribers = new Set();
+  }
+
+  depend() {
+    if (activeUpdate) {
+      // register current as subscriber
+      this.subscribers.add(activeUpdate);
+    }
+  }
+  notify() {
+    this.subscribers.forEach(sub => sub());
+  }
 }
 
-function autorun (update) {
-  // Implement this!
+let activeUpdate;
+
+function autorun (updateFn) {
+  function wrapperFunc(){
+    activeUpdate = wrapperFunc;
+    updateFn();
+    activeUpdate = null;
+  };
+  wrapperFunc()
 }
 </script>
