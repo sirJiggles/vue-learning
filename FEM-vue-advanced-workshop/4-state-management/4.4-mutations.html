@@ -9,7 +9,17 @@
 
 <script>
 function createStore ({ state, mutations }) {
-  // Implement this!
+  return new Vue({
+    data: {
+      state
+    },
+    methods: {
+      commit(key) {
+        this[key](this.state);
+      },
+      ...mutations
+    }
+  })
 }
 
 const store = createStore({
