@@ -28,19 +28,12 @@ const app = new Vue({
     content: ''
   },
   render(h) {
-    let children = []
-
-    const foundRoute = Object.keys(routeTable).includes(this.url);
-    if (foundRoute) {
-      children.push(h(routeTable[this.url]))
-    } else {
-      children.push(h(NotFound))
-    }
-
-    children.push(h('a', { attrs: { href: '#foo'} }, 'foo'))
-    children.push(h('a', { attrs: { href: '#bar'} }, 'bar'))
-
-    return h('div', {}, children);
+    return h('div', [
+      h(routeTable[this.url] || NotFound),
+      h('a', { attrs: { href: '#foo'} }, 'foo'),
+      ' | ',
+      h('a', { attrs: { href: '#bar'} }, 'bar')
+    ]);
   }
 })
 </script>
