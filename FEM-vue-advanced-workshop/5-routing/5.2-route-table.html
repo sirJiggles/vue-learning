@@ -1,9 +1,6 @@
 <script src="../node_modules/vue/dist/vue.js"></script>
 
 <div id="app">
-  <!-- render main view here -->
-  <a href="#foo">foo</a>
-  <a href="#bar">bar</a>
 </div>
 
 <script>
@@ -16,15 +13,34 @@ const Bar = { template: `<div>bar</div>` }
 const NotFound = { template: `<div>not found!</div>` }
 
 const routeTable = {
-  // Implement this!
+  foo: Foo,
+  bar: Bar
 }
 
 window.addEventListener('hashchange', () => {
-  // Implement this!
+  app.url = window.location.hash.slice(1)
 })
 
 const app = new Vue({
   el: '#app',
-  // Implement this!
+  data: {
+    url: window.location.hash.slice(1),
+    content: ''
+  },
+  render(h) {
+    let children = []
+
+    const foundRoute = Object.keys(routeTable).includes(this.url);
+    if (foundRoute) {
+      children.push(h(routeTable[this.url]))
+    } else {
+      children.push(h(NotFound))
+    }
+
+    children.push(h('a', { attrs: { href: '#foo'} }, 'foo'))
+    children.push(h('a', { attrs: { href: '#bar'} }, 'bar'))
+
+    return h('div', {}, children);
+  }
 })
 </script>
